@@ -1,13 +1,35 @@
-import Card from "./Card"
+import Card from "./Card";
+import { useEffect } from "react";
+import { useState } from "react";
 
-function Store(){
-    const cards = new Array(16).fill(<Card></Card>)
-    return (
-        <main className="w-3/4 mx-auto grid grid-cols-4 gap-4 py-5">
-            {cards}
-        </main>
-    )
+function Store() {
+  const [products, setProducts] = useState(new Array(20));
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((response) => response.json())
+      .then((res) => setProducts(res))
+      .catch((error) => {
+        console.error(error);
+        setError(true);
+      });
+  }, []);
+  
+  let displayProduct =[]
+  products.forEach((item, key)=>{
+    displayProduct.push(<Card key={key} name={item.title} price={item.price} desc={item.description} img={item.image}></Card>)
+  })
+
+  if(error){
+    return <h1 className="text-center text-white">Internal Error</h1>
+  }
+
+
+  return (
+    <main className="mx-auto grid w-3/4 grid-cols-4 gap-4 py-5">
+        {displayProduct}
+    </main>
+
+  );
 }
-
-
-export default Store
+export default Store;
