@@ -1,7 +1,9 @@
 import Card from "./Card"
 import { Link } from "react-router"
+import { useOutletContext } from "react-router"
 function Cart(){
     const buttons = "bg-stone-200 text-stone-950 rounded-md p-4 text-center  hover:cursor-pointer"
+    const [cart, setCart] = useOutletContext();
     return (
         <div className="text-white min-h-screen w-2/4 grid grid-cols-2 mx-auto gap-10 py-10 relative">
             <main className="flex flex-col gap-5">
