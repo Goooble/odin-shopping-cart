@@ -30,7 +30,7 @@ function Store() {
         id={key}
         cart={cart}
         setCart={setCart}
-      ></Card>,
+      ></Card>
     );
   });
 

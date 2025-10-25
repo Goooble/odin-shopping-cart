@@ -1,6 +1,11 @@
 import { useState } from "react";
+
+import UnitUpdater from "./UnitUpdater";
+import CartUnitUpdater from "./CartUnitUpdater";
+
 function Card({ storeCard = true, name, price, desc, img, id, cart, setCart }) {
-  const [units, setUnits] = useState(1);
+  const [units, setUnits] = useState(cart[id]?cart[id].units:1);
+    
   const addToCartButton = (
     <button
       onClick={() => {
@@ -21,11 +26,20 @@ function Card({ storeCard = true, name, price, desc, img, id, cart, setCart }) {
     </button>
   );
   const removeFromCartButton = (
-    <button className="w-full rounded-xs bg-stone-200 p-1 text-center text-black">
+    <button onClick={()=>{
+      const newCart = {...cart};
+      delete newCart[id];
+      setCart(newCart)
+    }} className="w-full rounded-xs bg-stone-200 p-1 text-center text-black">
       Remove from Cart
     </button>
   );
   let cartButton = storeCard == true ? addToCartButton : removeFromCartButton;
+  
+  const storeUpdater = <UnitUpdater units={units} setUnits={setUnits}></UnitUpdater>;
+  const cartUpdater = <CartUnitUpdater cart={cart} setCart={setCart} id={id}></CartUnitUpdater>
+ let updater = storeCard == true? storeUpdater: cartUpdater
+
   return (
     <div className="h-175 rounded-md bg-stone-700 p-3 text-white">
       <img
@@ -43,29 +57,9 @@ function Card({ storeCard = true, name, price, desc, img, id, cart, setCart }) {
         <div className="flex flex-col gap-2">
           <p className="mb-2 text-xl font-bold">{price}$</p>
           <div className="flex gap-2">
-            <button
-              onClick={() => {
-                if (Number(units) === 1) return;
-                setUnits(Number(units) - 1);
-              }}
-              className="aspect-square w-8 shrink-0 rounded-full bg-stone-400 p-1 font-bold"
-            >
-              -
-            </button>
-            <input
-              value={units}
-              onChange={(e) => {
-                setUnits(e.target.value);
-              }}
-              className="w-1/1 rounded-md border border-stone-500 text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              type="number"
-            />
-            <button
-              onClick={() => setUnits(Number(units) + 1)}
-              className="aspect-square w-8 shrink-0 rounded-full bg-stone-400 p-1 font-bold"
-            >
-              +
-            </button>
+            
+            {updater}
+            
           </div>
           {cartButton}
         </div>
