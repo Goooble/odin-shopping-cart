@@ -26,7 +26,7 @@ function Store() {
 
 
   return (
-    <main className="mx-auto grid w-3/4 grid-cols-4 gap-4 py-5">
+    <main className="mx-auto grid w-3/4 grid-cols-4 gap-4 py-5 min-h-screen">
         {displayProduct}
     </main>
 
